@@ -10,13 +10,8 @@ import { motion } from 'framer-motion';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-// Define the structure of the data items.
-interface DataItem {
-  'Clean Alternative Fuel Vehicle (CAFV) Eligibility': string;
-}
-
-// Export the component directly as a default function.
-export default function CAFVEligibilityChart({ data }: { data: DataItem[] }) {
+// Export the component directly without custom props
+export default function CAFVEligibilityChart({ data }: { data: { 'Clean Alternative Fuel Vehicle (CAFV) Eligibility': string }[] }) {
   const eligibilityCounts = data.reduce((acc, item) => {
     const eligibility = item['Clean Alternative Fuel Vehicle (CAFV) Eligibility'] || 'Unknown';
     if (eligibility.includes('Eligibility unknown')) {
