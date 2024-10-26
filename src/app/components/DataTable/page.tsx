@@ -8,8 +8,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { Input } from '@/components/ui/input';
+} from '../../../components/ui/table';
+import { Input } from '../../../components/ui/input';
 import { ArrowUpDown, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface DataItem {
