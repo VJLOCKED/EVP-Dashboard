@@ -1,10 +1,13 @@
 {
   "extends": [
     "next/core-web-vitals",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "plugin:@typescript-eslint/recommended" // Add this line to include TypeScript support
   ],
   "rules": {
     "react/react-in-jsx-scope": "off", // Next.js automatically imports React
-    "prettier/prettier": "off" // Show Prettier errors as ESLint errors
+    "prettier/prettier": "off", // Disable Prettier error reporting
+    "@typescript-eslint/no-invalid-this": "off", // Disable invalid this context errors
+    "@typescript-eslint/explicit-module-boundary-types": "off" // Disable explicit return type errors
   }
 }
