@@ -3,8 +3,6 @@
   "rules": {
     "react/no-unescaped-entities": "off",
     "@next/next/no-page-custom-font": "off",
-    "@typescript-eslint/ban-ts-comment": "off", // Allow TS comments to suppress specific errors
-    "@typescript-eslint/no-invalid-void-type": "off", // This can help in some cases
-    "import/named": "off" // Ignore named imports errors
+    "@typescript-eslint/no-invalid-void-type": "off" // Add this line
   }
 }

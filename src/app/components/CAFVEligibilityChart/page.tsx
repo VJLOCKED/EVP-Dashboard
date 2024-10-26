@@ -10,8 +10,7 @@ import { motion } from 'framer-motion';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-// Suppress TypeScript error for default export
-// @ts-ignore
+
 export default function CAFVEligibilityChart({ data }: { data: { 'Clean Alternative Fuel Vehicle (CAFV) Eligibility': string }[] }) {
   const eligibilityCounts = data.reduce((acc, item) => {
     const eligibility = item['Clean Alternative Fuel Vehicle (CAFV) Eligibility'] || 'Unknown';
