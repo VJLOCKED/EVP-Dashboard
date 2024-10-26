@@ -9,7 +9,6 @@ import EVTypesPieChart from '../EVTypesPieChart/page'
 import EVTypeByYearChart from '../EVTypeByYearChart/page'
 import PostalCodeChart from '../PostalCodeChart/page'
 import ModelTypeCensus from '../ModelTypeCensus/page'
-import CountyCityChart from '../CountyCityChart/page'
 import DataTable from '../DataTable/page'
 
 interface EVData {
@@ -123,16 +122,6 @@ export default function Dashboard() {
               </CardHeader>
               <CardContent className="h-80">
                 <ModelTypeCensus data={data} />
-              </CardContent>
-            </Card>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-xl">Top Counties and Cities</CardTitle>
-              </CardHeader>
-              <CardContent className="h-80">
-                <CountyCityChart data={data} />
               </CardContent>
             </Card>
           </div>
