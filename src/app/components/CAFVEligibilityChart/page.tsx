@@ -15,13 +15,8 @@ interface DataItem {
   'Clean Alternative Fuel Vehicle (CAFV) Eligibility': string;
 }
 
-// Define the component props structure.
-type CAFVEligibilityChartProps = {
-  data: DataItem[];
-};
-
-// Define the component directly, with props typed in the function parameter.
-function CAFVEligibilityChart({ data }: CAFVEligibilityChartProps) {
+// Export the component directly as a default function.
+export default function CAFVEligibilityChart({ data }: { data: DataItem[] }) {
   const eligibilityCounts = data.reduce((acc, item) => {
     const eligibility = item['Clean Alternative Fuel Vehicle (CAFV) Eligibility'] || 'Unknown';
     if (eligibility.includes('Eligibility unknown')) {
@@ -83,5 +78,3 @@ function CAFVEligibilityChart({ data }: CAFVEligibilityChartProps) {
     </motion.div>
   );
 }
-
-export default CAFVEligibilityChart;
