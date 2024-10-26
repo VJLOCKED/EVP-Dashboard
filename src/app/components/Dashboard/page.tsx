@@ -23,12 +23,6 @@ import CAFVEligibilityChart from "../CAFVEligibilityChart/page";
 import CountyCityChart from "../CountyCityChart/page";
 import DataTable from "../DataTable/page";
 
-interface EVData {
-  Make: string;
-  Model: string;
-  "Model Year": number;
-  // Add more fields based on your actual data
-}
 export default function Dashboard() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
