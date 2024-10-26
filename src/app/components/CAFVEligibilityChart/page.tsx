@@ -10,15 +10,18 @@ import { motion } from 'framer-motion';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
+// Define the structure of the data items.
 interface DataItem {
   'Clean Alternative Fuel Vehicle (CAFV) Eligibility': string;
 }
 
-export type CAFVEligibilityChartProps = {
+// Define the component props structure.
+type CAFVEligibilityChartProps = {
   data: DataItem[];
 };
 
-const CAFVEligibilityChart = ({ data }: CAFVEligibilityChartProps) => {
+// Define the component directly, with props typed in the function parameter.
+function CAFVEligibilityChart({ data }: CAFVEligibilityChartProps) {
   const eligibilityCounts = data.reduce((acc, item) => {
     const eligibility = item['Clean Alternative Fuel Vehicle (CAFV) Eligibility'] || 'Unknown';
     if (eligibility.includes('Eligibility unknown')) {
@@ -79,6 +82,6 @@ const CAFVEligibilityChart = ({ data }: CAFVEligibilityChartProps) => {
       <Pie data={chartData} options={options} />
     </motion.div>
   );
-};
+}
 
 export default CAFVEligibilityChart;
