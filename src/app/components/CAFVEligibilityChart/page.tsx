@@ -1,3 +1,5 @@
+// src/app/components/CAFVEligibilityChart/page.tsx
+
 import { Pie } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -10,17 +12,18 @@ import { motion } from 'framer-motion';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
+export interface DataItem {
+  'Clean Alternative Fuel Vehicle (CAFV) Eligibility': string;
+}
 
-export default function CAFVEligibilityChart({ data }: { data: { 'Clean Alternative Fuel Vehicle (CAFV) Eligibility': string }[] }) {
+export interface CAFVEligibilityChartProps {
+  data: DataItem[]; // Ensure this matches the data shape being passed
+}
+
+const CAFVEligibilityChart: React.FC<CAFVEligibilityChartProps> = ({ data }) => {
   const eligibilityCounts = data.reduce((acc, item) => {
     const eligibility = item['Clean Alternative Fuel Vehicle (CAFV) Eligibility'] || 'Unknown';
-    if (eligibility.includes('Eligibility unknown')) {
-      acc['Eligibility unknown'] = (acc['Eligibility unknown'] || 0) + 1;
-    } else if (eligibility === 'Clean Alternative Fuel Vehicle Eligible') {
-      acc['CAFV Eligible'] = (acc['CAFV Eligible'] || 0) + 1;
-    } else {
-      acc['Others'] = (acc['Others'] || 0) + 1;
-    }
+    acc[eligibility] = (acc[eligibility] || 0) + 1; // Count occurrences
     return acc;
   }, {} as Record<string, number>);
 
@@ -72,4 +75,6 @@ export default function CAFVEligibilityChart({ data }: { data: { 'Clean Alternat
       <Pie data={chartData} options={options} />
     </motion.div>
   );
-}
+};
+
+export default CAFVEligibilityChart;
