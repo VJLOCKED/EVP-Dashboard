@@ -10,9 +10,10 @@ import {
   Title,
   Tooltip,
   Legend,
-  ChartOptions
+  ChartOptions,
 } from 'chart.js'
 
+// Register Chart.js components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -23,18 +24,26 @@ ChartJS.register(
   Legend
 )
 
-export default function EVTypeByYearChart({ data }) {
-  const evTypesByYear = data.reduce((acc, item) => {
-    const year = item['Model Year']
-    const type = item['Electric Vehicle Type']
-    if (!acc[year]) acc[year] = {}
-    acc[year][type] = (acc[year][type] || 0) + 1
-    return acc
-  }, {})
+// Define the types for props
+interface EVTypeByYearChartProps {
+  data: { [key: string]: any }[]; // Adjust the type based on your data structure
+}
 
-  const years = Object.keys(evTypesByYear).sort()
-  const evTypes = Array.from(new Set(data.map(item => item['Electric Vehicle Type'])))
+export default function EVTypeByYearChart({ data }: EVTypeByYearChartProps) {
+  // Count the number of EV types by year
+  const evTypesByYear = data.reduce<Record<string, Record<string, number>>>((acc, item) => {
+    const year = item['Model Year'] as string; // Ensure 'Model Year' is treated as string
+    const type = item['Electric Vehicle Type'] as string; // Ensure 'Electric Vehicle Type' is treated as string
+    if (!acc[year]) acc[year] = {};
+    acc[year][type] = (acc[year][type] || 0) + 1;
+    return acc;
+  }, {});
 
+  // Prepare years and electric vehicle types
+  const years = Object.keys(evTypesByYear).sort();
+  const evTypes = Array.from(new Set(data.map(item => item['Electric Vehicle Type'] as string)));
+
+  // Prepare chart data
   const chartData = {
     labels: years,
     datasets: evTypes.map((type, index) => ({
@@ -44,8 +53,9 @@ export default function EVTypeByYearChart({ data }) {
       backgroundColor: `hsla(${index * 137.5}, 70%, 50%, 0.5)`,
       tension: 0.1,
     })),
-  }
+  };
 
+  // Chart options
   const options: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
@@ -76,7 +86,8 @@ export default function EVTypeByYearChart({ data }) {
         },
       },
     },
-  }
+  };
 
-  return <Line data={chartData} options={options} />
+  // Render the Line chart
+  return <Line data={chartData} options={options} />;
 }

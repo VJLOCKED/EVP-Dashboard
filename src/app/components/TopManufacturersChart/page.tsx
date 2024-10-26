@@ -9,29 +9,31 @@ import {
   Title,
   Tooltip,
   Legend,
-  ChartOptions
+  ChartOptions,
 } from 'chart.js'
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-)
+// Register Chart.js components
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
-export default function TopManufacturersChart({ data }) {
-  const manufacturerCounts = data.reduce((acc, item) => {
-    const make = item.Make
-    acc[make] = (acc[make] || 0) + 1
-    return acc
-  }, {})
+// Define the types for props
+interface TopManufacturersChartProps {
+  data: { Make: string }[]; // Adjust the type based on your data structure
+}
 
+export default function TopManufacturersChart({ data }: TopManufacturersChartProps) {
+  // Count occurrences of each manufacturer
+  const manufacturerCounts = data.reduce<Record<string, number>>((acc, item) => {
+    const make = item.Make || 'Unknown'; // Fallback to 'Unknown' if Make is undefined
+    acc[make] = (acc[make] || 0) + 1;
+    return acc;
+  }, {});
+
+  // Sort manufacturers and take the top 10
   const sortedManufacturers = Object.entries(manufacturerCounts)
     .sort((a, b) => b[1] - a[1])
-    .slice(0, 10)
+    .slice(0, 10);
 
+  // Prepare chart data
   const chartData = {
     labels: sortedManufacturers.map(([make]) => make),
     datasets: [
@@ -43,12 +45,13 @@ export default function TopManufacturersChart({ data }) {
         borderWidth: 1,
       },
     ],
-  }
+  };
 
+  // Chart options
   const options: ChartOptions<'bar'> = {
     responsive: true,
     maintainAspectRatio: false,
-    indexAxis: 'y' as const,
+    indexAxis: 'y' as const, // Horizontal bar chart
     plugins: {
       legend: {
         position: 'top' as const,
@@ -76,7 +79,8 @@ export default function TopManufacturersChart({ data }) {
         },
       },
     },
-  }
+  };
 
-  return <Bar data={chartData} options={options} />
+  // Render the Bar chart
+  return <Bar data={chartData} options={options} />;
 }

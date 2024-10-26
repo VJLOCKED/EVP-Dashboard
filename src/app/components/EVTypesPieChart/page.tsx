@@ -6,18 +6,26 @@ import {
   ArcElement,
   Tooltip,
   Legend,
-  ChartOptions
+  ChartOptions,
 } from 'chart.js'
 
+// Register Chart.js components
 ChartJS.register(ArcElement, Tooltip, Legend)
 
-export default function EVTypesPieChart({ data }) {
-  const typeCounts = data.reduce((acc, item) => {
-    const type = item['Electric Vehicle Type']
-    acc[type] = (acc[type] || 0) + 1
-    return acc
-  }, {})
+// Define the types for props
+interface EVTypesPieChartProps {
+  data: { [key: string]: any }[]; // Adjust the type based on your data structure
+}
 
+export default function EVTypesPieChart({ data }: EVTypesPieChartProps) {
+  // Count the number of each EV type
+  const typeCounts = data.reduce<Record<string, number>>((acc, item) => {
+    const type = item['Electric Vehicle Type'] as string; // Ensure 'Electric Vehicle Type' is treated as string
+    acc[type] = (acc[type] || 0) + 1;
+    return acc;
+  }, {});
+
+  // Prepare chart data
   const chartData = {
     labels: Object.keys(typeCounts),
     datasets: [
@@ -38,8 +46,9 @@ export default function EVTypesPieChart({ data }) {
         borderWidth: 1,
       },
     ],
-  }
+  };
 
+  // Chart options
   const options: ChartOptions<'pie'> = {
     responsive: true,
     maintainAspectRatio: false,
@@ -55,7 +64,8 @@ export default function EVTypesPieChart({ data }) {
         },
       },
     },
-  }
+  };
 
-  return <Pie data={chartData} options={options} />
+  // Render the Pie chart
+  return <Pie data={chartData} options={options} />;
 }

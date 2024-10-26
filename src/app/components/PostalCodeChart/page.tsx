@@ -9,30 +9,32 @@ import {
   Title,
   Tooltip,
   Legend,
-  ChartOptions
+  ChartOptions,
 } from 'chart.js'
 import { motion } from 'framer-motion'
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-)
+// Register Chart.js components
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
-export default function PostalCodeChart({ data }) {
-  const postalCodeCounts = data.reduce((acc, item) => {
-    const postalCode = item['Postal Code'] || 'Unknown'
-    acc[postalCode] = (acc[postalCode] || 0) + 1
-    return acc
-  }, {})
+// Define the types for props
+interface PostalCodeChartProps {
+  data: { [key: string]: any }[]; // Adjust the type based on your data structure
+}
 
+export default function PostalCodeChart({ data }: PostalCodeChartProps) {
+  // Count occurrences of each postal code
+  const postalCodeCounts = data.reduce<Record<string, number>>((acc, item) => {
+    const postalCode = item['Postal Code'] || 'Unknown'; // Fallback to 'Unknown'
+    acc[postalCode] = (acc[postalCode] || 0) + 1;
+    return acc;
+  }, {});
+
+  // Sort postal codes and take the top 10
   const sortedPostalCodes = Object.entries(postalCodeCounts)
     .sort((a, b) => b[1] - a[1])
-    .slice(0, 10)
+    .slice(0, 10);
 
+  // Prepare chart data
   const chartData = {
     labels: sortedPostalCodes.map(([code]) => code),
     datasets: [
@@ -44,8 +46,9 @@ export default function PostalCodeChart({ data }) {
         borderWidth: 1,
       },
     ],
-  }
+  };
 
+  // Chart options
   const options: ChartOptions<'bar'> = {
     responsive: true,
     maintainAspectRatio: false,
@@ -77,8 +80,9 @@ export default function PostalCodeChart({ data }) {
         },
       },
     },
-  }
+  };
 
+  // Render the Bar chart within a motion div for animation
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
@@ -88,5 +92,5 @@ export default function PostalCodeChart({ data }) {
     >
       <Bar data={chartData} options={options} />
     </motion.div>
-  )
+  );
 }

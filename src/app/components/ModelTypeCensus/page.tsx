@@ -6,25 +6,34 @@ import {
   ArcElement,
   Tooltip,
   Legend,
-  ChartOptions
+  ChartOptions,
 } from 'chart.js'
 import { motion } from 'framer-motion'
 
+// Register Chart.js components
 ChartJS.register(ArcElement, Tooltip, Legend)
 
-export default function ModelTypeCensus({ data }) {
-  const modelTypeCounts = data.reduce((acc, item) => {
-    const modelType = item['Model'] || 'Unknown'
-    acc[modelType] = (acc[modelType] || 0) + 1
-    return acc
-  }, {})
+// Define the types for props
+interface ModelTypeCensusProps {
+  data: { [key: string]: any }[]; // Adjust the type based on your data structure
+}
 
-  const sortedModelTypes = Object.entries(modelTypeCounts)
-    .sort((a, b) => b[1] - a[1])
+export default function ModelTypeCensus({ data }: ModelTypeCensusProps) {
+  // Count occurrences of each model type
+  const modelTypeCounts = data.reduce<Record<string, number>>((acc, item) => {
+    const modelType = item['Model'] || 'Unknown'; // Ensure fallback to 'Unknown'
+    acc[modelType] = (acc[modelType] || 0) + 1;
+    return acc;
+  }, {});
 
-  const topThreeModelTypes = sortedModelTypes.slice(0, 3)
-  const otherCount = sortedModelTypes.slice(3).reduce((sum, [, count]) => sum + count, 0)
+  // Sort model types by count
+  const sortedModelTypes = Object.entries(modelTypeCounts).sort((a, b) => b[1] - a[1]);
 
+  // Get top three model types and others
+  const topThreeModelTypes = sortedModelTypes.slice(0, 3);
+  const otherCount = sortedModelTypes.slice(3).reduce((sum, [, count]) => sum + count, 0);
+
+  // Prepare chart data
   const chartData = {
     labels: [...topThreeModelTypes.map(([type]) => type), 'Others'],
     datasets: [
@@ -45,8 +54,9 @@ export default function ModelTypeCensus({ data }) {
         borderWidth: 1,
       },
     ],
-  }
+  };
 
+  // Chart options
   const options: ChartOptions<'pie'> = {
     responsive: true,
     maintainAspectRatio: false,
@@ -63,8 +73,9 @@ export default function ModelTypeCensus({ data }) {
         },
       },
     },
-  }
+  };
 
+  // Render the Pie chart within a motion div for animation
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
@@ -74,5 +85,5 @@ export default function ModelTypeCensus({ data }) {
     >
       <Pie data={chartData} options={options} />
     </motion.div>
-  )
+  );
 }
