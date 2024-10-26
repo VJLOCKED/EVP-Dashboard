@@ -16,15 +16,18 @@ import { motion } from 'framer-motion'
 // Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
-// Define the types for props
+interface PostalCodeData {
+  'Postal Code': string;
+}
+
 interface PostalCodeChartProps {
-  data: { [key: string]: any }[]; // Adjust the type based on your data structure
+  data: PostalCodeData[];
 }
 
 export default function PostalCodeChart({ data }: PostalCodeChartProps) {
   // Count occurrences of each postal code
   const postalCodeCounts = data.reduce<Record<string, number>>((acc, item) => {
-    const postalCode = item['Postal Code'] || 'Unknown'; // Fallback to 'Unknown'
+    const postalCode = item["Postal Code"] || "Unknown"; // Fallback to 'Unknown'
     acc[postalCode] = (acc[postalCode] || 0) + 1;
     return acc;
   }, {});

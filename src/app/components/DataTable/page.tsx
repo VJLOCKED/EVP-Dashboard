@@ -12,8 +12,15 @@ import {
 import { Input } from '@/components/ui/input';
 import { ArrowUpDown, ChevronLeft, ChevronRight } from 'lucide-react';
 
+interface DataItem {
+  id: number; // or string, based on your data
+  name: string;
+  value: number; // Adjust based on actual data types
+  // Add other properties as needed
+}
+
 interface DataTableProps {
-  data: Array<Record<string, any>>; // Define a generic structure for your data
+  data: DataItem[]; // Use the defined DataItem type
 }
 
 export default function DataTable({ data }: DataTableProps) {
@@ -36,8 +43,8 @@ export default function DataTable({ data }: DataTableProps) {
   const sortedData = useMemo(() => {
     return [...filteredData].sort((a, b) => {
       if (!sortColumn) return 0;
-      const aValue = a[sortColumn];
-      const bValue = b[sortColumn];
+      const aValue = a[sortColumn as keyof DataItem]; // Use keyof to specify the type
+      const bValue = b[sortColumn as keyof DataItem];
       if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
       if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
       return 0;
@@ -50,7 +57,7 @@ export default function DataTable({ data }: DataTableProps) {
     currentPage * itemsPerPage
   );
 
-  const handleSort = (column: string) => {
+  const handleSort = (column: keyof DataItem) => {
     if (column === sortColumn) {
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
     } else {
@@ -92,7 +99,7 @@ export default function DataTable({ data }: DataTableProps) {
               {Object.keys(data[0]).map(columnKey => (
                 <TableHead key={columnKey} className="font-semibold text-sm">
                   <button
-                    onClick={() => handleSort(columnKey)}
+                    onClick={() => handleSort(columnKey as keyof DataItem)}
                     className="flex items-center space-x-1 text-left font-semibold"
                   >
                     <span className="whitespace-nowrap">{columnKey}</span>

@@ -22,19 +22,21 @@ ChartJS.register(
   Legend
 )
 
-// Define the types for props
+interface EVCountChartData {
+  'Model Year': string;
+}
+
 interface EVCountChartProps {
-  data: { [key: string]: any }[]; // Adjust type as necessary for your data structure
+  data: EVCountChartData[];
 }
 
 export default function EVCountChart({ data }: EVCountChartProps) {
-  // Count the number of EVs per model year
+  // Type is now EVCountChartData[], so TypeScript knows 'Model Year' is a string
   const yearCounts = data.reduce<Record<string, number>>((acc, item) => {
-    const year = item['Model Year'] as string; // Ensure 'Model Year' is treated as string
+    const year = item['Model Year'];
     acc[year] = (acc[year] || 0) + 1;
     return acc;
   }, {});
-
   // Prepare chart data
   const chartData = {
     labels: Object.keys(yearCounts).sort(),

@@ -15,19 +15,22 @@ import {
 // Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
-// Define the types for props
-interface TopManufacturersChartProps {
-  data: { Make: string }[]; // Adjust the type based on your data structure
+interface ManufacturerData {
+  Make: string;
 }
+
+interface TopManufacturersChartProps {
+  data: ManufacturerData[];
+}
+
 
 export default function TopManufacturersChart({ data }: TopManufacturersChartProps) {
   // Count occurrences of each manufacturer
   const manufacturerCounts = data.reduce<Record<string, number>>((acc, item) => {
-    const make = item.Make || 'Unknown'; // Fallback to 'Unknown' if Make is undefined
+    const make = item.Make || "Unknown"; // Fallback to 'Unknown'
     acc[make] = (acc[make] || 0) + 1;
     return acc;
   }, {});
-
   // Sort manufacturers and take the top 10
   const sortedManufacturers = Object.entries(manufacturerCounts)
     .sort((a, b) => b[1] - a[1])

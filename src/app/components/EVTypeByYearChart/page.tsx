@@ -24,21 +24,24 @@ ChartJS.register(
   Legend
 )
 
-// Define the types for props
+interface EVTypeByYearChartData {
+  'Model Year': string;
+  'Electric Vehicle Type': string;
+}
+
 interface EVTypeByYearChartProps {
-  data: { [key: string]: any }[]; // Adjust the type based on your data structure
+  data: EVTypeByYearChartData[];
 }
 
 export default function EVTypeByYearChart({ data }: EVTypeByYearChartProps) {
-  // Count the number of EV types by year
   const evTypesByYear = data.reduce<Record<string, Record<string, number>>>((acc, item) => {
-    const year = item['Model Year'] as string; // Ensure 'Model Year' is treated as string
-    const type = item['Electric Vehicle Type'] as string; // Ensure 'Electric Vehicle Type' is treated as string
+    const year = item['Model Year'];
+    const type = item['Electric Vehicle Type'];
     if (!acc[year]) acc[year] = {};
     acc[year][type] = (acc[year][type] || 0) + 1;
     return acc;
   }, {});
-
+  
   // Prepare years and electric vehicle types
   const years = Object.keys(evTypesByYear).sort();
   const evTypes = Array.from(new Set(data.map(item => item['Electric Vehicle Type'] as string)));

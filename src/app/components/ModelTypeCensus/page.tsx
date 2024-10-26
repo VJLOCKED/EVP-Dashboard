@@ -12,16 +12,17 @@ import { motion } from 'framer-motion'
 
 // Register Chart.js components
 ChartJS.register(ArcElement, Tooltip, Legend)
+interface ModelData {
+  Model?: string;
+}
 
-// Define the types for props
 interface ModelTypeCensusProps {
-  data: { [key: string]: any }[]; // Adjust the type based on your data structure
+  data: ModelData[];
 }
 
 export default function ModelTypeCensus({ data }: ModelTypeCensusProps) {
-  // Count occurrences of each model type
   const modelTypeCounts = data.reduce<Record<string, number>>((acc, item) => {
-    const modelType = item['Model'] || 'Unknown'; // Ensure fallback to 'Unknown'
+    const modelType = item.Model || 'Unknown';
     acc[modelType] = (acc[modelType] || 0) + 1;
     return acc;
   }, {});
