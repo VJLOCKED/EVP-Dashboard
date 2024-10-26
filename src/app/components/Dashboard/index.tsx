@@ -13,15 +13,15 @@ import {
   TabsList,
   TabsTrigger,
 } from "../../../components/ui/tabs";
-import EVCountChart from "../EVCountChart/page";
-import TopManufacturersChart from "../TopManufacturersChart/page";
-import EVTypesPieChart from "../EVTypesPieChart/page";
-import EVTypeByYearChart from "../EVTypeByYearChart/page";
-import PostalCodeChart from "../PostalCodeChart/page";
-import ModelTypeCensus from "../ModelTypeCensus/page";
-import CAFVEligibilityChart from "../CAFVEligibilityChart/page";
-import CountyCityChart from "../CountyCityChart/page";
-import DataTable from "../DataTable/page";
+import EVCountChart from "../EVCountChart";
+import TopManufacturersChart from "../TopManufacturersChart";
+import EVTypesPieChart from "../EVTypesPieChart";
+import EVTypeByYearChart from "../EVTypeByYearChart";
+import PostalCodeChart from "../PostalCodeChart";
+import ModelTypeCensus from "../ModelTypeCensus";
+import CAFVEligibilityChart from "../CAFVEligibilityChart";
+import CountyCityChart from "../CountyCityChart";
+import DataTable from "../DataTable";
 
 export default function Dashboard() {
   const [data, setData] = useState([]);
