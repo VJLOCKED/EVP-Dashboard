@@ -1,29 +1,35 @@
-'use client'
-
-import { Pie } from 'react-chartjs-2'
+import { Pie } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   ArcElement,
   Tooltip,
   Legend,
-  ChartOptions
-} from 'chart.js'
-import { motion } from 'framer-motion'
+  ChartOptions,
+} from 'chart.js';
+import { motion } from 'framer-motion';
 
-ChartJS.register(ArcElement, Tooltip, Legend)
+ChartJS.register(ArcElement, Tooltip, Legend);
 
-export default function CAFVEligibilityChart({ data }) {
+interface DataItem {
+  'Clean Alternative Fuel Vehicle (CAFV) Eligibility': string;
+}
+
+interface CAFVEligibilityChartProps {
+  data: DataItem[]; // Ensure this matches the data shape being passed
+}
+
+export default function CAFVEligibilityChart({ data }: CAFVEligibilityChartProps) {
   const eligibilityCounts = data.reduce((acc, item) => {
-    const eligibility = item['Clean Alternative Fuel Vehicle (CAFV) Eligibility'] || 'Unknown'
+    const eligibility = item['Clean Alternative Fuel Vehicle (CAFV) Eligibility'] || 'Unknown';
     if (eligibility.includes('Eligibility unknown')) {
-      acc['Eligibility unknown'] = (acc['Eligibility unknown'] || 0) + 1
+      acc['Eligibility unknown'] = (acc['Eligibility unknown'] || 0) + 1;
     } else if (eligibility === 'Clean Alternative Fuel Vehicle Eligible') {
-      acc['CAFV Eligible'] = (acc['CAFV Eligible'] || 0) + 1
+      acc['CAFV Eligible'] = (acc['CAFV Eligible'] || 0) + 1;
     } else {
-      acc['Others'] = (acc['Others'] || 0) + 1
+      acc['Others'] = (acc['Others'] || 0) + 1;
     }
-    return acc
-  }, {})
+    return acc;
+  }, {} as Record<string, number>);
 
   const chartData = {
     labels: Object.keys(eligibilityCounts),
@@ -43,7 +49,7 @@ export default function CAFVEligibilityChart({ data }) {
         borderWidth: 1,
       },
     ],
-  }
+  };
 
   const options: ChartOptions<'pie'> = {
     responsive: true,
@@ -61,7 +67,7 @@ export default function CAFVEligibilityChart({ data }) {
         },
       },
     },
-  }
+  };
 
   return (
     <motion.div
@@ -72,5 +78,5 @@ export default function CAFVEligibilityChart({ data }) {
     >
       <Pie data={chartData} options={options} />
     </motion.div>
-  )
+  );
 }
