@@ -9,43 +9,53 @@ import {
   Title,
   Tooltip,
   Legend,
-  ChartOptions
+  ChartOptions,
 } from 'chart.js'
 import { motion } from 'framer-motion'
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-)
+// Register Chart.js components
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
-export default function CountyCityChart({ data }) {
-  const countyCounts = data.reduce((acc, item) => {
-    const county = item['County'] || 'Unknown'
+// Define the types for the incoming data
+interface DataItem {
+  County?: string; // Optional property for County
+  City?: string;   // Optional property for City
+}
+
+interface CountyCityChartProps {
+  data: DataItem[]; // Array of data items
+}
+
+export default function CountyCityChart({ data }: CountyCityChartProps) {
+  // Count occurrences of each county
+  const countyCounts = data.reduce<Record<string, number>>((acc, item) => {
+    const county = item.County || 'Unknown'
     acc[county] = (acc[county] || 0) + 1
     return acc
   }, {})
 
-  const cityCounts = data.reduce((acc, item) => {
-    const city = item['City'] || 'Unknown'
+  // Count occurrences of each city
+  const cityCounts = data.reduce<Record<string, number>>((acc, item) => {
+    const city = item.City || 'Unknown'
     acc[city] = (acc[city] || 0) + 1
     return acc
   }, {})
 
+  // Sort and take the top 3 counties
   const topCounties = Object.entries(countyCounts)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 3)
-  
+
+  // Sort and take the top 3 cities
   const topCities = Object.entries(cityCounts)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 3)
 
+  // Calculate counts for 'Other' categories
   const countyOthers = Object.values(countyCounts).reduce((sum, count) => sum + count, 0) - topCounties.reduce((sum, [, count]) => sum + count, 0)
   const cityOthers = Object.values(cityCounts).reduce((sum, count) => sum + count, 0) - topCities.reduce((sum, [, count]) => sum + count, 0)
 
+  // Prepare chart data
   const chartData = {
     labels: ['Counties', 'Cities'],
     datasets: [
@@ -72,6 +82,7 @@ export default function CountyCityChart({ data }) {
     ],
   }
 
+  // Chart options
   const options: ChartOptions<'bar'> = {
     responsive: true,
     maintainAspectRatio: false,
@@ -103,6 +114,7 @@ export default function CountyCityChart({ data }) {
     },
   }
 
+  // Render the Bar chart
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
