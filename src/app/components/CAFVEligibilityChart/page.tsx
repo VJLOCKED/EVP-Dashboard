@@ -10,18 +10,15 @@ import { motion } from 'framer-motion';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-// Ensure the interface matches the shape of your data
 interface DataItem {
   'Clean Alternative Fuel Vehicle (CAFV) Eligibility': string;
 }
 
-// Explicitly exporting the props type
-interface CAFVEligibilityChartProps {
-  data: DataItem[]; // Ensure this matches the data shape being passed
-}
+export type CAFVEligibilityChartProps = {
+  data: DataItem[];
+};
 
-// Define the component with explicit typing for props
-const CAFVEligibilityChart: React.FC<CAFVEligibilityChartProps> = ({ data }) => {
+const CAFVEligibilityChart = ({ data }: CAFVEligibilityChartProps) => {
   const eligibilityCounts = data.reduce((acc, item) => {
     const eligibility = item['Clean Alternative Fuel Vehicle (CAFV) Eligibility'] || 'Unknown';
     if (eligibility.includes('Eligibility unknown')) {
@@ -84,5 +81,4 @@ const CAFVEligibilityChart: React.FC<CAFVEligibilityChartProps> = ({ data }) => 
   );
 };
 
-// Export the component as default
 export default CAFVEligibilityChart;
