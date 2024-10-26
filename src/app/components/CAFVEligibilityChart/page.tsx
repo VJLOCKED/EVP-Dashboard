@@ -17,7 +17,7 @@ export interface DataItem {
 }
 
 export interface CAFVEligibilityChartProps {
-  data: DataItem[]; // Ensure this matches the data shape being passed
+  data: DataItem[];
 }
 
 const CAFVEligibilityChart: React.FC<CAFVEligibilityChartProps> = ({
