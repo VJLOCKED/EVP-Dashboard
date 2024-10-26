@@ -16,11 +16,11 @@ interface DataItem {
 }
 
 // Explicitly exporting the props type
-export interface CAFVEligibilityChartProps {
+interface CAFVEligibilityChartProps {
   data: DataItem[]; // Ensure this matches the data shape being passed
 }
 
-// Default export for the component
+// Define the component with explicit typing for props
 const CAFVEligibilityChart: React.FC<CAFVEligibilityChartProps> = ({ data }) => {
   const eligibilityCounts = data.reduce((acc, item) => {
     const eligibility = item['Clean Alternative Fuel Vehicle (CAFV) Eligibility'] || 'Unknown';
@@ -84,4 +84,5 @@ const CAFVEligibilityChart: React.FC<CAFVEligibilityChartProps> = ({ data }) => 
   );
 };
 
+// Export the component as default
 export default CAFVEligibilityChart;
