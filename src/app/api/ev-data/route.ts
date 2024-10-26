@@ -7,7 +7,7 @@ export async function GET() {
   const filePath = path.join(
     process.cwd(),
     "public",
-    "Electric_Vehicle_Population_Data.csv"
+    "Electric_Vehicle_Population_Data.csv",
   );
   const fileContent = fs.readFileSync(filePath, "utf-8");
   const records = parse(fileContent, { columns: true, skip_empty_lines: true });

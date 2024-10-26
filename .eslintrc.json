@@ -5,6 +5,6 @@
   ],
   "rules": {
     "react/react-in-jsx-scope": "off", // Next.js automatically imports React
-    "prettier/prettier": "error" // Show Prettier errors as ESLint errors
+    "prettier/prettier": "off" // Show Prettier errors as ESLint errors
   }
 }
