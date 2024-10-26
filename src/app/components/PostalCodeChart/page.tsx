@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import { Bar } from 'react-chartjs-2'
+import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,14 +10,21 @@ import {
   Tooltip,
   Legend,
   ChartOptions,
-} from 'chart.js'
-import { motion } from 'framer-motion'
+} from "chart.js";
+import { motion } from "framer-motion";
 
 // Register Chart.js components
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 interface PostalCodeData {
-  'Postal Code': string;
+  "Postal Code": string;
 }
 
 interface PostalCodeChartProps {
@@ -42,29 +49,29 @@ export default function PostalCodeChart({ data }: PostalCodeChartProps) {
     labels: sortedPostalCodes.map(([code]) => code),
     datasets: [
       {
-        label: 'Number of EVs',
+        label: "Number of EVs",
         data: sortedPostalCodes.map(([, count]) => count),
-        backgroundColor: 'rgba(75, 192, 192, 0.6)',
-        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: "rgba(75, 192, 192, 0.6)",
+        borderColor: "rgba(75, 192, 192, 1)",
         borderWidth: 1,
       },
     ],
   };
 
   // Chart options
-  const options: ChartOptions<'bar'> = {
+  const options: ChartOptions<"bar"> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'top' as const,
+        position: "top" as const,
       },
       title: {
         display: true,
-        text: 'Top 10 Postal Codes',
+        text: "Top 10 Postal Codes",
         font: {
           size: 16,
-          weight: 'bold',
+          weight: "bold",
         },
       },
     },
@@ -73,13 +80,13 @@ export default function PostalCodeChart({ data }: PostalCodeChartProps) {
         beginAtZero: true,
         title: {
           display: true,
-          text: 'Number of EVs',
+          text: "Number of EVs",
         },
       },
       x: {
         title: {
           display: true,
-          text: 'Postal Code',
+          text: "Postal Code",
         },
       },
     },

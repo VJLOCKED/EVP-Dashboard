@@ -1,39 +1,53 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '../../../components/ui/card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../components/ui/tabs'
-import EVCountChart from '../EVCountChart/page'
-import TopManufacturersChart from '../TopManufacturersChart/page'
-import EVTypesPieChart from '../EVTypesPieChart/page'
-import EVTypeByYearChart from '../EVTypeByYearChart/page'
-import PostalCodeChart from '../PostalCodeChart/page'
-import ModelTypeCensus from '../ModelTypeCensus/page'
-import CAFVEligibilityChart from '../CAFVEligibilityChart/page'
-import CountyCityChart from '../CountyCityChart/page'
-import DataTable from '../DataTable/page'
+import { useState, useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../../../components/ui/card";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../../../components/ui/tabs";
+import EVCountChart from "../EVCountChart/page";
+import TopManufacturersChart from "../TopManufacturersChart/page";
+import EVTypesPieChart from "../EVTypesPieChart/page";
+import EVTypeByYearChart from "../EVTypeByYearChart/page";
+import PostalCodeChart from "../PostalCodeChart/page";
+import ModelTypeCensus from "../ModelTypeCensus/page";
+import CAFVEligibilityChart from "../CAFVEligibilityChart/page";
+import CountyCityChart from "../CountyCityChart/page";
+import DataTable from "../DataTable/page";
 
 interface EVData {
   Make: string;
   Model: string;
-  'Model Year': number;
+  "Model Year": number;
   // Add more fields based on your actual data
 }
 export default function Dashboard() {
-  const [data, setData] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/ev-data')
-      .then(response => response.json())
-      .then(data => {
-        setData(data)
-        setLoading(false)
-      })
-  }, [])
+    fetch("/api/ev-data")
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+        setLoading(false);
+      });
+  }, []);
 
   if (loading) {
-    return <div className="flex items-center justify-center min-h-screen">Loading...</div>
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        Loading...
+      </div>
+    );
   }
 
   return (
@@ -47,7 +61,9 @@ export default function Dashboard() {
             <CardTitle className="text-lg">Total EVs</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold text-primary">{data.length.toLocaleString()}</p>
+            <p className="text-4xl font-bold text-primary">
+              {data.length.toLocaleString()}
+            </p>
           </CardContent>
         </Card>
         <Card>
@@ -55,7 +71,9 @@ export default function Dashboard() {
             <CardTitle className="text-lg">Unique Makes</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold text-secondary">{new Set(data.map(item => item.Make)).size}</p>
+            <p className="text-4xl font-bold text-secondary">
+              {new Set(data.map((item) => item.Make)).size}
+            </p>
           </CardContent>
         </Card>
         <Card>
@@ -63,14 +81,20 @@ export default function Dashboard() {
             <CardTitle className="text-lg">Latest Model Year</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold text-accent">{Math.max(...data.map(item => item['Model Year']))}</p>
+            <p className="text-4xl font-bold text-accent">
+              {Math.max(...data.map((item) => item["Model Year"]))}
+            </p>
           </CardContent>
         </Card>
       </div>
       <Tabs defaultValue="charts" className="space-y-6">
         <TabsList className="bg-card">
-          <TabsTrigger value="charts" className="text-lg">Charts</TabsTrigger>
-          <TabsTrigger value="data" className="text-lg">Data Table</TabsTrigger>
+          <TabsTrigger value="charts" className="text-lg">
+            Charts
+          </TabsTrigger>
+          <TabsTrigger value="data" className="text-lg">
+            Data Table
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="charts" className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -112,7 +136,9 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle className="text-xl">Postal Code Distribution</CardTitle>
+                <CardTitle className="text-xl">
+                  Postal Code Distribution
+                </CardTitle>
               </CardHeader>
               <CardContent className="h-80">
                 <PostalCodeChart data={data} />
@@ -138,7 +164,9 @@ export default function Dashboard() {
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle className="text-xl">Top Counties and Cities</CardTitle>
+                <CardTitle className="text-xl">
+                  Top Counties and Cities
+                </CardTitle>
               </CardHeader>
               <CardContent className="h-80">
                 <CountyCityChart data={data} />
@@ -155,5 +183,5 @@ export default function Dashboard() {
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }

@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import { Bar } from 'react-chartjs-2'
+import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,7 +10,7 @@ import {
   Tooltip,
   Legend,
   ChartOptions,
-} from 'chart.js'
+} from "chart.js";
 
 // Register Chart.js components
 ChartJS.register(
@@ -20,10 +20,10 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend
-)
+);
 
 interface EVCountChartData {
-  'Model Year': string;
+  "Model Year": string;
 }
 
 interface EVCountChartProps {
@@ -33,7 +33,7 @@ interface EVCountChartProps {
 export default function EVCountChart({ data }: EVCountChartProps) {
   // Type is now EVCountChartData[], so TypeScript knows 'Model Year' is a string
   const yearCounts = data.reduce<Record<string, number>>((acc, item) => {
-    const year = item['Model Year'];
+    const year = item["Model Year"];
     acc[year] = (acc[year] || 0) + 1;
     return acc;
   }, {});
@@ -42,28 +42,28 @@ export default function EVCountChart({ data }: EVCountChartProps) {
     labels: Object.keys(yearCounts).sort(),
     datasets: [
       {
-        label: 'Number of EVs',
+        label: "Number of EVs",
         data: Object.keys(yearCounts)
           .sort()
-          .map(year => yearCounts[year]),
-        backgroundColor: 'rgba(53, 162, 235, 0.8)',
-        borderColor: 'rgba(53, 162, 235, 1)',
+          .map((year) => yearCounts[year]),
+        backgroundColor: "rgba(53, 162, 235, 0.8)",
+        borderColor: "rgba(53, 162, 235, 1)",
         borderWidth: 1,
       },
     ],
   };
 
   // Chart options
-  const options: ChartOptions<'bar'> = {
+  const options: ChartOptions<"bar"> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'top' as const,
+        position: "top" as const,
       },
       title: {
         display: true,
-        text: 'EV Count by Model Year',
+        text: "EV Count by Model Year",
         font: {
           size: 16,
         },
@@ -74,13 +74,13 @@ export default function EVCountChart({ data }: EVCountChartProps) {
         beginAtZero: true,
         title: {
           display: true,
-          text: 'Number of EVs',
+          text: "Number of EVs",
         },
       },
       x: {
         title: {
           display: true,
-          text: 'Model Year',
+          text: "Model Year",
         },
       },
     },

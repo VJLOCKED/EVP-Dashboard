@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo } from "react";
 import {
   Table,
   TableBody,
@@ -8,9 +8,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '../../../components/ui/table';
-import { Input } from '../../../components/ui/input';
-import { ArrowUpDown, ChevronLeft, ChevronRight } from 'lucide-react';
+} from "../../../components/ui/table";
+import { Input } from "../../../components/ui/input";
+import { ArrowUpDown, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface DataItem {
   id: number; // or string, based on your data
@@ -24,16 +24,16 @@ interface DataTableProps {
 }
 
 export default function DataTable({ data }: DataTableProps) {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortColumn, setSortColumn] = useState<string>('');
-  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  const [sortColumn, setSortColumn] = useState<string>("");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
   const filteredData = useMemo(() => {
-    return data.filter(item =>
+    return data.filter((item) =>
       Object.values(item).some(
-        value =>
+        (value) =>
           value &&
           value.toString().toLowerCase().includes(searchTerm.toLowerCase())
       )
@@ -45,8 +45,8 @@ export default function DataTable({ data }: DataTableProps) {
       if (!sortColumn) return 0;
       const aValue = a[sortColumn as keyof DataItem]; // Use keyof to specify the type
       const bValue = b[sortColumn as keyof DataItem];
-      if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
-      if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
+      if (aValue < bValue) return sortDirection === "asc" ? -1 : 1;
+      if (aValue > bValue) return sortDirection === "asc" ? 1 : -1;
       return 0;
     });
   }, [filteredData, sortColumn, sortDirection]);
@@ -59,10 +59,10 @@ export default function DataTable({ data }: DataTableProps) {
 
   const handleSort = (column: keyof DataItem) => {
     if (column === sortColumn) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else {
       setSortColumn(column);
-      setSortDirection('asc');
+      setSortDirection("asc");
     }
   };
 
@@ -73,7 +73,7 @@ export default function DataTable({ data }: DataTableProps) {
           type="text"
           placeholder="Search..."
           value={searchTerm}
-          onChange={e => setSearchTerm(e.target.value)}
+          onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full sm:w-64"
         />
         <div className="flex items-center space-x-2">
@@ -83,7 +83,7 @@ export default function DataTable({ data }: DataTableProps) {
           <select
             id="itemsPerPage"
             value={itemsPerPage}
-            onChange={e => setItemsPerPage(Number(e.target.value))}
+            onChange={(e) => setItemsPerPage(Number(e.target.value))}
             className="border rounded px-2 py-1 text-sm"
           >
             <option value={10}>10</option>
@@ -96,7 +96,7 @@ export default function DataTable({ data }: DataTableProps) {
         <Table>
           <TableHeader>
             <TableRow>
-              {Object.keys(data[0]).map(columnKey => (
+              {Object.keys(data[0]).map((columnKey) => (
                 <TableHead key={columnKey} className="font-semibold text-sm">
                   <button
                     onClick={() => handleSort(columnKey as keyof DataItem)}
@@ -114,7 +114,11 @@ export default function DataTable({ data }: DataTableProps) {
               <TableRow key={index}>
                 {Object.entries(item).map(([cellKey, value]) => (
                   <TableCell key={cellKey} className="whitespace-nowrap">
-                    {typeof value === 'boolean' ? (value ? 'Yes' : 'No') : value}
+                    {typeof value === "boolean"
+                      ? value
+                        ? "Yes"
+                        : "No"
+                      : value}
                   </TableCell>
                 ))}
               </TableRow>
@@ -125,7 +129,7 @@ export default function DataTable({ data }: DataTableProps) {
       <div className="flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0">
         <div className="flex items-center space-x-2">
           <button
-            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
             className="p-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
             aria-label="Previous page"
@@ -136,7 +140,9 @@ export default function DataTable({ data }: DataTableProps) {
             Page {currentPage} of {pageCount}
           </span>
           <button
-            onClick={() => setCurrentPage(prev => Math.min(prev + 1, pageCount))}
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, pageCount))
+            }
             disabled={currentPage === pageCount}
             className="p-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
             aria-label="Next page"
@@ -145,7 +151,9 @@ export default function DataTable({ data }: DataTableProps) {
           </button>
         </div>
         <div className="text-sm text-gray-600">
-          Showing {(currentPage - 1) * itemsPerPage + 1} - {Math.min(currentPage * itemsPerPage, sortedData.length)} of {sortedData.length} items
+          Showing {(currentPage - 1) * itemsPerPage + 1} -{" "}
+          {Math.min(currentPage * itemsPerPage, sortedData.length)} of{" "}
+          {sortedData.length} items
         </div>
       </div>
     </div>

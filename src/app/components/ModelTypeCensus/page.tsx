@@ -1,17 +1,17 @@
-'use client'
+"use client";
 
-import { Pie } from 'react-chartjs-2'
+import { Pie } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   ArcElement,
   Tooltip,
   Legend,
   ChartOptions,
-} from 'chart.js'
-import { motion } from 'framer-motion'
+} from "chart.js";
+import { motion } from "framer-motion";
 
 // Register Chart.js components
-ChartJS.register(ArcElement, Tooltip, Legend)
+ChartJS.register(ArcElement, Tooltip, Legend);
 interface ModelData {
   Model?: string;
 }
@@ -22,35 +22,39 @@ interface ModelTypeCensusProps {
 
 export default function ModelTypeCensus({ data }: ModelTypeCensusProps) {
   const modelTypeCounts = data.reduce<Record<string, number>>((acc, item) => {
-    const modelType = item.Model || 'Unknown';
+    const modelType = item.Model || "Unknown";
     acc[modelType] = (acc[modelType] || 0) + 1;
     return acc;
   }, {});
 
   // Sort model types by count
-  const sortedModelTypes = Object.entries(modelTypeCounts).sort((a, b) => b[1] - a[1]);
+  const sortedModelTypes = Object.entries(modelTypeCounts).sort(
+    (a, b) => b[1] - a[1]
+  );
 
   // Get top three model types and others
   const topThreeModelTypes = sortedModelTypes.slice(0, 3);
-  const otherCount = sortedModelTypes.slice(3).reduce((sum, [, count]) => sum + count, 0);
+  const otherCount = sortedModelTypes
+    .slice(3)
+    .reduce((sum, [, count]) => sum + count, 0);
 
   // Prepare chart data
   const chartData = {
-    labels: [...topThreeModelTypes.map(([type]) => type), 'Others'],
+    labels: [...topThreeModelTypes.map(([type]) => type), "Others"],
     datasets: [
       {
         data: [...topThreeModelTypes.map(([, count]) => count), otherCount],
         backgroundColor: [
-          'rgba(255, 99, 132, 0.8)',
-          'rgba(54, 162, 235, 0.8)',
-          'rgba(255, 206, 86, 0.8)',
-          'rgba(75, 192, 192, 0.8)',
+          "rgba(255, 99, 132, 0.8)",
+          "rgba(54, 162, 235, 0.8)",
+          "rgba(255, 206, 86, 0.8)",
+          "rgba(75, 192, 192, 0.8)",
         ],
         borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
         ],
         borderWidth: 1,
       },
@@ -58,19 +62,19 @@ export default function ModelTypeCensus({ data }: ModelTypeCensusProps) {
   };
 
   // Chart options
-  const options: ChartOptions<'pie'> = {
+  const options: ChartOptions<"pie"> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'right' as const,
+        position: "right" as const,
       },
       title: {
         display: true,
-        text: 'Top 3 Model Types',
+        text: "Top 3 Model Types",
         font: {
           size: 16,
-          weight: 'bold',
+          weight: "bold",
         },
       },
     },

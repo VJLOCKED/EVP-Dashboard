@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import { Bar } from 'react-chartjs-2'
+import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,10 +10,17 @@ import {
   Tooltip,
   Legend,
   ChartOptions,
-} from 'chart.js'
+} from "chart.js";
 
 // Register Chart.js components
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 interface ManufacturerData {
   Make: string;
@@ -23,14 +30,18 @@ interface TopManufacturersChartProps {
   data: ManufacturerData[];
 }
 
-
-export default function TopManufacturersChart({ data }: TopManufacturersChartProps) {
+export default function TopManufacturersChart({
+  data,
+}: TopManufacturersChartProps) {
   // Count occurrences of each manufacturer
-  const manufacturerCounts = data.reduce<Record<string, number>>((acc, item) => {
-    const make = item.Make || "Unknown"; // Fallback to 'Unknown'
-    acc[make] = (acc[make] || 0) + 1;
-    return acc;
-  }, {});
+  const manufacturerCounts = data.reduce<Record<string, number>>(
+    (acc, item) => {
+      const make = item.Make || "Unknown"; // Fallback to 'Unknown'
+      acc[make] = (acc[make] || 0) + 1;
+      return acc;
+    },
+    {}
+  );
   // Sort manufacturers and take the top 10
   const sortedManufacturers = Object.entries(manufacturerCounts)
     .sort((a, b) => b[1] - a[1])
@@ -41,27 +52,27 @@ export default function TopManufacturersChart({ data }: TopManufacturersChartPro
     labels: sortedManufacturers.map(([make]) => make),
     datasets: [
       {
-        label: 'Number of EVs',
+        label: "Number of EVs",
         data: sortedManufacturers.map(([, count]) => count),
-        backgroundColor: 'rgba(75, 192, 192, 0.8)',
-        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: "rgba(75, 192, 192, 0.8)",
+        borderColor: "rgba(75, 192, 192, 1)",
         borderWidth: 1,
       },
     ],
   };
 
   // Chart options
-  const options: ChartOptions<'bar'> = {
+  const options: ChartOptions<"bar"> = {
     responsive: true,
     maintainAspectRatio: false,
-    indexAxis: 'y' as const, // Horizontal bar chart
+    indexAxis: "y" as const, // Horizontal bar chart
     plugins: {
       legend: {
-        position: 'top' as const,
+        position: "top" as const,
       },
       title: {
         display: true,
-        text: 'Top 10 EV Manufacturers',
+        text: "Top 10 EV Manufacturers",
         font: {
           size: 16,
         },
@@ -72,13 +83,13 @@ export default function TopManufacturersChart({ data }: TopManufacturersChartPro
         beginAtZero: true,
         title: {
           display: true,
-          text: 'Number of EVs',
+          text: "Number of EVs",
         },
       },
       y: {
         title: {
           display: true,
-          text: 'Manufacturer',
+          text: "Manufacturer",
         },
       },
     },
