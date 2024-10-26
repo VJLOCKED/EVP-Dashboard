@@ -1,88 +1,4 @@
-// 'use client'
-
-// import { useState } from 'react'
-// import { Input } from '../../../components/ui/input'
-// import {
-//   Table,
-//   TableBody,
-//   TableCell,
-//   TableHead,
-//   TableHeader,
-//   TableRow,
-// } from '@/components/ui/table'
-
-// export default function DataTable({ data }) {
-//   const [searchTerm, setSearchTerm] = useState('')
-//   const [currentPage, setCurrentPage] = useState(1)
-//   const itemsPerPage = 10
-
-//   const filteredData = data.filter(item =>
-//     Object.values(item).some(
-//       value =>
-//         value &&
-//         value.toString().toLowerCase().includes(searchTerm.toLowerCase())
-//     )
-//   )
-
-//   const pageCount = Math.ceil(filteredData.length / itemsPerPage)
-//   const paginatedData = filteredData.slice(
-//     (currentPage - 1) * itemsPerPage,
-//     currentPage * itemsPerPage
-//   )
-
-//   return (
-//     <div>
-//       <Input
-//         type="text"
-//         placeholder="Search..."
-//         value={searchTerm}
-//         onChange={e => setSearchTerm(e.target.value)}
-//         className="mb-4"
-//       />
-//       <Table>
-//         <TableHeader>
-//           <TableRow>
-//             {Object.keys(data[0]).map(key => (
-//               <TableHead key={key}>{key}</TableHead>
-//             ))}
-//           </TableRow>
-//         </TableHeader>
-//         <TableBody>
-//           {paginatedData.map((item, index) => (
-//             <TableRow key={index}>
-//               {Object.values(item).map((value, i) => (
-//                 <TableCell key={i}>{value}</TableCell>
-//               ))}
-//             </TableRow>
-//           ))}
-//         </TableBody>
-//       </Table>
-//       <div className="flex justify-between items-center mt-4">
-//         <button
-//           onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-//           disabled={currentPage === 1}
-//           className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
-//         >
-//           Previous
-//         </button>
-//         <span>
-//           Page {currentPage} of {pageCount}
-//         </span>
-//         <button
-//           onClick={() => setCurrentPage(prev => Math.min(prev + 1, pageCount))}
-//           disabled={currentPage === pageCount}
-//           className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
-//         >
-//           Next
-//         </button>
-//       </div>
-//     </div>
-//   )
-// }
-
-'use client'
-
-import { useState, useMemo } from 'react'
+import { useState, useMemo } from 'react';
 import {
   Table,
   TableBody,
@@ -90,16 +6,20 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
-import { Input } from '@/components/ui/input'
-import { ArrowUpDown, ChevronLeft, ChevronRight } from 'lucide-react'
+} from '@/components/ui/table';
+import { Input } from '@/components/ui/input';
+import { ArrowUpDown, ChevronLeft, ChevronRight } from 'lucide-react';
 
-export default function DataTable({ data }) {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [currentPage, setCurrentPage] = useState(1)
-  const [sortColumn, setSortColumn] = useState('')
-  const [sortDirection, setSortDirection] = useState('asc')
-  const [itemsPerPage, setItemsPerPage] = useState(10)
+interface DataTableProps {
+  data: Array<Record<string, any>>; // Define a generic structure for your data
+}
+
+export default function DataTable({ data }: DataTableProps) {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [sortColumn, setSortColumn] = useState<string>('');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   const filteredData = useMemo(() => {
     return data.filter(item =>
@@ -108,34 +28,34 @@ export default function DataTable({ data }) {
           value &&
           value.toString().toLowerCase().includes(searchTerm.toLowerCase())
       )
-    )
-  }, [data, searchTerm])
+    );
+  }, [data, searchTerm]);
 
   const sortedData = useMemo(() => {
     return [...filteredData].sort((a, b) => {
-      if (!sortColumn) return 0
-      const aValue = a[sortColumn]
-      const bValue = b[sortColumn]
-      if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1
-      if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1
-      return 0
-    })
-  }, [filteredData, sortColumn, sortDirection])
+      if (!sortColumn) return 0;
+      const aValue = a[sortColumn];
+      const bValue = b[sortColumn];
+      if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
+      if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }, [filteredData, sortColumn, sortDirection]);
 
-  const pageCount = Math.ceil(sortedData.length / itemsPerPage)
+  const pageCount = Math.ceil(sortedData.length / itemsPerPage);
   const paginatedData = sortedData.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
-  )
+  );
 
-  const handleSort = (column) => {
+  const handleSort = (column: string) => {
     if (column === sortColumn) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
     } else {
-      setSortColumn(column)
-      setSortDirection('asc')
+      setSortColumn(column);
+      setSortDirection('asc');
     }
-  }
+  };
 
   return (
     <div className="space-y-4">
@@ -167,13 +87,13 @@ export default function DataTable({ data }) {
         <Table>
           <TableHeader>
             <TableRow>
-              {Object.keys(data[0]).map(key => (
-                <TableHead key={key} className="font-semibold text-sm">
+              {Object.keys(data[0]).map(columnKey => (
+                <TableHead key={columnKey} className="font-semibold text-sm">
                   <button
-                    onClick={() => handleSort(key)}
+                    onClick={() => handleSort(columnKey)}
                     className="flex items-center space-x-1 text-left font-semibold"
                   >
-                    <span className="whitespace-nowrap">{key}</span>
+                    <span className="whitespace-nowrap">{columnKey}</span>
                     <ArrowUpDown className="h-4 w-4" />
                   </button>
                 </TableHead>
@@ -183,8 +103,8 @@ export default function DataTable({ data }) {
           <TableBody>
             {paginatedData.map((item, index) => (
               <TableRow key={index}>
-                {Object.entries(item).map(([key, value], i) => (
-                  <TableCell key={i} className="whitespace-nowrap">
+                {Object.entries(item).map(([cellKey, value]) => (
+                  <TableCell key={cellKey} className="whitespace-nowrap">
                     {typeof value === 'boolean' ? (value ? 'Yes' : 'No') : value}
                   </TableCell>
                 ))}
@@ -220,5 +140,5 @@ export default function DataTable({ data }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
