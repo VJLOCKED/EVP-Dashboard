@@ -9,7 +9,7 @@ import EVTypesPieChart from '../EVTypesPieChart/page'
 import EVTypeByYearChart from '../EVTypeByYearChart/page'
 import PostalCodeChart from '../PostalCodeChart/page'
 import ModelTypeCensus from '../ModelTypeCensus/page'
-import CAFVEligibilityChart from '../CAFVEligibilityChart/page'
+// import CAFVEligibilityChart from '../CAFVEligibilityChart/page'
 import CountyCityChart from '../CountyCityChart/page'
 import DataTable from '../DataTable/page'
 
@@ -128,14 +128,14 @@ export default function Dashboard() {
             </Card>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card>
+            {/* <Card>
               <CardHeader>
                 <CardTitle className="text-xl">CAFV Eligibility</CardTitle>
               </CardHeader>
               <CardContent className="h-80">
                 <CAFVEligibilityChart data={data} />
               </CardContent>
-            </Card>
+            </Card> */}
             <Card>
               <CardHeader>
                 <CardTitle className="text-xl">Top Counties and Cities</CardTitle>
